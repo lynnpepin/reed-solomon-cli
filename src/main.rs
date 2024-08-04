@@ -45,7 +45,7 @@ fn main() {
     match &args.command {
         Commands::Encode {input, output} => {
             // println!("todo; encode {input} to {output}");
-            let encoder = Encoder::new(8);
+            let encoder = Encoder::new(32);
             let data: Vec<u8> = match std::fs::read(input)  {
                 Ok(d) => d,
                 Err(err) => panic!("Error on read before encode: {err}"),
@@ -58,7 +58,7 @@ fn main() {
             
         },
         Commands::Decode {input, output} => {
-            let decoder = Decoder::new(8);
+            let decoder = Decoder::new(32);
             let data: Vec<u8> = match std::fs::read(input)  {
                 Ok(d) => d,
                 Err(err) => panic!("Error on read before decode: {err}"),

@@ -1,5 +1,5 @@
 [package]
-name        = "rs-cli"
+name        = "reed_solomon_cli"
 version     = "0.1.0"
 edition     = "2021"
 authors     = ["Lynn Pepin <lynn@lynndotpy.dev>"]
