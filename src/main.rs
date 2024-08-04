@@ -42,8 +42,6 @@ enum Commands {
 fn main() {
     let args = Args::parse();
 
-    //println!("{args:?}");
-
     match &args.command {
         Commands::Encode {input, output} => {
             // println!("todo; encode {input} to {output}");
@@ -55,12 +53,23 @@ fn main() {
             let encoded = encoder.encode(&data[..]);
             match std::fs::write(output, &encoded[..])  {
               Ok(_) => (),
-              Err(err) => panic!("Error on writing during encode: {err}")
+              Err(err) => panic!("Error on writing after encode: {err}")
             };
             
         },
         Commands::Decode {input, output} => {
-            println!("todo; decode {input} to {output}");
+            let decoder = Decoder::new(8);
+            let data: Vec<u8> = match std::fs::read(input)  {
+                Ok(d) => d,
+                Err(err) => panic!("Error on read before decode: {err}"),
+            };
+            match decoder.correct(data.as_slice(), None) {
+                Ok(decoded) => match std::fs::write(output, decoded.data()) {
+                  Ok(_) => (),
+                  Err(err) => panic!("Error on writing after decode: {err}")
+                },
+                Err(err) => println!("Error on decoding: {err:?}")
+            };
         }
     }
 }
