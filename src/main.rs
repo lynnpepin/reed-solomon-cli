@@ -42,17 +42,21 @@ enum Commands {
 fn main() {
     let args = Args::parse();
 
-    println!("{args:?}");
+    //println!("{args:?}");
 
     match &args.command {
         Commands::Encode {input, output} => {
             // println!("todo; encode {input} to {output}");
             let encoder = Encoder::new(8);
-            let data: Vec<u8>= match std::fs::read(input)  {
+            let data: Vec<u8> = match std::fs::read(input)  {
                 Ok(d) => d,
-                Err(err) => panic!("Error on read: {err}"),
+                Err(err) => panic!("Error on read before encode: {err}"),
             };
-            println!("todo: encode {data:?} to {output}");
+            let encoded = encoder.encode(&data[..]);
+            match std::fs::write(output, &encoded[..])  {
+              Ok(_) => (),
+              Err(err) => panic!("Error on writing during encode: {err}")
+            };
             
         },
         Commands::Decode {input, output} => {
